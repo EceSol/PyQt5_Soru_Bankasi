@@ -1,34 +1,31 @@
 import sys
-import os
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QFileDialog
-from PyQt5.uic import loadUi
 
-def get_ui_path(filename):
-    return os.path.join(os.path.dirname(__file__), "ui", filename)
-
-
+# .ui dosyalarını pyuic5 ile çevirdiyseniz bu importlar çalışır:
+from ui.ui_ana_ekran import Ui_MainWindow
+from ui.ui_soru_ekleme import Ui_Form as Ui_SoruEkleme
+from ui.ui_soru_yazdirma import Ui_Form as Ui_SoruYazdirma
 
 class SoruEklemeEkrani(QWidget):
     def __init__(self):
         super().__init__()
-        loadUi(get_ui_path("soru_ekleme.ui"), self)
-        self.btnEkle.clicked.connect(self.soru_ekle)
-        self.btnKaydet.clicked.connect(self.kaydet)
-
+        self.ui = Ui_SoruEkleme()
+        self.ui.setupUi(self)
+        self.ui.btnEkle.clicked.connect(self.soru_ekle)
+        self.ui.btnKaydet.clicked.connect(self.kaydet)
         self.soruListesi = []
 
     def soru_ekle(self):
-        soru = self.textSoru.toPlainText()
+        soru = self.ui.textSoru.toPlainText()
         cevaplar = [
-            self.cevap1.text(),
-            self.cevap2.text(),
-            self.cevap3.text(),
-            self.cevap4.text(),
-            self.cevap5.text()
-
+            self.ui.cevap1.text(),
+            self.ui.cevap2.text(),
+            self.ui.cevap3.text(),
+            self.ui.cevap4.text(),
+            self.ui.cevap5.text()
         ]
         dogru_index = -1
-        for i, radio in enumerate([self.radio1, self.radio2, self.radio3, self.radio4, self.radio5]):
+        for i, radio in enumerate([self.ui.radio1, self.ui.radio2, self.ui.radio3, self.ui.radio4, self.ui.radio5]):
             if radio.isChecked():
                 dogru_index = i
                 break
@@ -39,10 +36,10 @@ class SoruEklemeEkrani(QWidget):
                 "cevaplar": cevaplar,
                 "dogru": dogru_index
             })
-            self.textSoru.clear()
-            for lineEdit in [self.cevap1, self.cevap2, self.cevap3, self.cevap4, self.cevap5]:
+            self.ui.textSoru.clear()
+            for lineEdit in [self.ui.cevap1, self.ui.cevap2, self.ui.cevap3, self.ui.cevap4, self.ui.cevap5]:
                 lineEdit.clear()
-            for radio in [self.radio1, self.radio2, self.radio3, self.radio4, self.radio5]:
+            for radio in [self.ui.radio1, self.ui.radio2, self.ui.radio3, self.ui.radio4, self.ui.radio5]:
                 radio.setChecked(False)
 
     def kaydet(self):
@@ -59,10 +56,10 @@ class SoruEklemeEkrani(QWidget):
 class SoruSecmeEkrani(QWidget):
     def __init__(self):
         super().__init__()
-        loadUi(get_ui_path("soru_yazdirma.ui"), self)
-        self.btnSec.clicked.connect(self.dosya_sec)
-        self.btnYazdir.clicked.connect(self.yazdir)
-
+        self.ui = Ui_SoruYazdirma()
+        self.ui.setupUi(self)
+        self.ui.btnSec.clicked.connect(self.dosya_sec)
+        self.ui.btnYazdir.clicked.connect(self.yazdir)
         self.icerik = ""
 
     def dosya_sec(self):
@@ -70,12 +67,27 @@ class SoruSecmeEkrani(QWidget):
         if dosya_adi:
             with open(dosya_adi, "r", encoding="utf-8") as f:
                 self.icerik = f.read()
-                self.textAlan.setPlainText(self.icerik)
+                self.ui.textAlan.setPlainText(self.icerik)
 
     def yazdir(self):
-        # Buraya yazıcıya gönderme veya PDF yapma özelliği eklenebilir
         print("Yazdırılıyor...")
         print(self.icerik)
+
+class AnaSayfa(QMainWindow):
+    def __init__(self):
+        super().__init__()
+        self.ui = Ui_MainWindow()
+        self.ui.setupUi(self)
+        self.ui.btnYeniSoru.clicked.connect(self.yeni_soru_ekle)
+        self.ui.btnSoruSec.clicked.connect(self.soru_sec)
+
+    def yeni_soru_ekle(self):
+        self.soruEkleme = SoruEklemeEkrani()
+        self.soruEkleme.show()
+
+    def soru_sec(self):
+        self.soruSecme = SoruSecmeEkrani()
+        self.soruSecme.show()
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
