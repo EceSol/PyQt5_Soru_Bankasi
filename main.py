@@ -1,5 +1,4 @@
 import sys
-from tkinter import messagebox
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QFileDialog, QMessageBox
 from ui.ui_ana_ekran import Ui_MainWindow
 from ui.ui_soru_ekleme import Ui_Form as Ui_SoruEkleme
