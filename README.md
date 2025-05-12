@@ -19,8 +19,12 @@ Bu uygulama, kullanıcıların soru ve cevaplarını kolayca ekleyip bir Excel d
 
 ---
 
+## Dosya Yapısı
+
+- `main.py` : Uygulamanın ana dosyası
+- `ui/` : Arayüz dosyaları (.ui ve .py)
+- `soru_bankasi.xlsx` : Kaydedilen soruların tutulduğu dosya
+
+---
 
 
-## Lisans
-
-MIT
