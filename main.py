@@ -25,6 +25,7 @@ class SoruEklemeEkrani(QWidget):
             self.cevap3.text(),
             self.cevap4.text(),
             self.cevap5.text()
+
         ]
         dogru_index = -1
         for i, radio in enumerate([self.radio1, self.radio2, self.radio3, self.radio4, self.radio5]):
