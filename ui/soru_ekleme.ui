@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="windowTitle">
+   <string>Form - toplu.ui</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0" rowspan="1" colspan="2">
+    <widget class="QLabel" name="labelSoru">
+     <property name="text">
+      <string>Soru</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0" colspan="2">
+    <widget class="QTextEdit" name="textSoru"/>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="labelSecenekler">
+     <property name="text">
+      <string>Şıklar</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0" colspan="2">
+    <layout class="QVBoxLayout" name="optionsLayout">
+     <item>
+      <widget class="QRadioButton" name="radio1">
+       <property name="text">
+        <string>1. Cevap</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="cevap1"/>
+     </item>
+     <item>
+      <widget class="QRadioButton" name="radio2">
+       <property name="text">
+        <string>2. Cevap</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="cevap2"/>
+     </item>
+     <item>
+      <widget class="QRadioButton" name="radio3">
+       <property name="text">
+        <string>3. Cevap</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="cevap3"/>
+     </item>
+     <item>
+      <widget class="QRadioButton" name="radio4">
+       <property name="text">
+        <string>4. Cevap</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="cevap4"/>
+     </item>
+     <item>
+      <widget class="QRadioButton" name="radio5">
+       <property name="text">
+        <string>5. Cevap</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="cevap5"/>
+     </item>
+    </layout>
+   </item>
+   <item row="4" column="0">
+    <widget class="QPushButton" name="btnEkle">
+     <property name="text">
+      <string>Soru Bankasına Ekle</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="1">
+    <widget class="QPushButton" name="btnKaydet">
+     <property name="text">
+      <string>Soru Bankasını Kaydet</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
