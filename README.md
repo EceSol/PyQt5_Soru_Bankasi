@@ -16,6 +16,7 @@ Bu uygulama, kullanıcıların soru ve cevaplarını kolayca ekleyip bir Excel d
 3. Ana ekranda:
     - **Yeni Soru Ekle:** Soru ve cevapları girip Excel dosyasına kaydedin.
     - **Soru Seç ve Yazdır:** Kayıtlı Excel veya TXT dosyasından soruları seçip PDF olarak yazdırın.
+    - **NOT:** Önce soruları ekleyip sonra kaydetmeniz gerekmektedir.
 
 ---
 
