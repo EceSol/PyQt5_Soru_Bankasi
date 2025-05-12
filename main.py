@@ -3,6 +3,10 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QFileDialog
 from ui.ui_ana_ekran import Ui_MainWindow
 from ui.ui_soru_ekleme import Ui_Form as Ui_SoruEkleme
 from ui.ui_soru_yazdirma import Ui_Form as Ui_SoruYazdirma
+from openpyxl import load_workbook
+# filepath: [main.py](http://_vscodecontentref_/2)
+from PyQt5.QtPrintSupport import QPrinter, QPrintDialog
+from PyQt5.QtGui import QTextDocument
 
 import os
 from openpyxl import Workbook, load_workbook
@@ -77,15 +81,47 @@ class SoruSecmeEkrani(QWidget):
         self.icerik = ""
 
     def dosya_sec(self):
-        dosya_adi, _ = QFileDialog.getOpenFileName(self, "Dosya Seç", "", "Text Dosyaları (*.txt)")
+        dosya_adi, _ = QFileDialog.getOpenFileName(
+            self, "Dosya Seç", "", "Excel Dosyaları (*.xlsx);;Text Dosyaları (*.txt)"
+        )
         if dosya_adi:
-            with open(dosya_adi, "r", encoding="utf-8") as f:
-                self.icerik = f.read()
+            if dosya_adi.endswith('.xlsx'):
+                wb = load_workbook(dosya_adi)
+                ws = wb.active
+                icerik = ""
+                for i, row in enumerate(ws.iter_rows(values_only=True)):
+                    if i == 0:
+                        continue  # başlık satırını atla
+                    soru = row[0]
+                    cevaplar = row[1:6]
+                    dogru = row[6]
+                    icerik += f"Soru: {soru}\n"
+                    for idx, cevap in enumerate(cevaplar):
+                        harf = chr(65 + idx)
+                        dogru_mu = " (Doğru)" if harf == dogru else ""
+                        icerik += f"  {harf}. {cevap}{dogru_mu}\n"
+                    icerik += "\n"
+                self.icerik = icerik
                 self.ui.textAlan.setPlainText(self.icerik)
+            else:
+                with open(dosya_adi, "r", encoding="utf-8") as f:
+                    self.icerik = f.read()
+                    self.ui.textAlan.setPlainText(self.icerik)
 
     def yazdir(self):
-        print("Yazdırılıyor...")
-        print(self.icerik)
+        dosya_adi, _ = QFileDialog.getSaveFileName(self, "PDF Olarak Kaydet", "", "PDF Dosyası (*.pdf)")
+        if not dosya_adi:
+            return
+        if not dosya_adi.endswith('.pdf'):
+            dosya_adi += '.pdf'
+
+        printer = QPrinter(QPrinter.HighResolution)
+        printer.setOutputFormat(QPrinter.PdfFormat)
+        printer.setOutputFileName(dosya_adi)
+
+        doc = QTextDocument()
+        doc.setPlainText(self.icerik)
+        doc.print_(printer)
 
 class AnaSayfa(QMainWindow):
     def __init__(self):
