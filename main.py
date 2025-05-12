@@ -1,5 +1,6 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QFileDialog
+from tkinter import messagebox
+from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QFileDialog, QMessageBox
 from ui.ui_ana_ekran import Ui_MainWindow
 from ui.ui_soru_ekleme import Ui_Form as Ui_SoruEkleme
 from ui.ui_soru_yazdirma import Ui_Form as Ui_SoruYazdirma
@@ -56,14 +57,18 @@ class SoruEklemeEkrani(QWidget):
             wb = Workbook()
             ws = wb.active
             ws.append(["Soru", "Cevap A", "Cevap B", "Cevap C", "Cevap D", "Cevap E", "Doğru Şık"])
-    
+        if not self.soruListesi:
+         QMessageBox.warning(self, "Uyarı", "Kaydedilecek soru yok!")
+         return
+
         for s in self.soruListesi:
             dogru_harf = chr(65 + s['dogru'])  # 0->A, 1->B, ...
             ws.append([s['soru']] + s['cevaplar'] + [dogru_harf])
-    
+
         wb.save(dosya_adi)
         self.soruListesi.clear()
-    
+        QMessageBox.information(self, "Başarılı", "Sorular başarıyla kaydedildi.")
+
 class SoruSecmeEkrani(QWidget):
     def __init__(self):
         super().__init__()
