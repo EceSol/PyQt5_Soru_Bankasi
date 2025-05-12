@@ -48,14 +48,7 @@ class SoruEklemeEkrani(QWidget):
                 radio.setChecked(False)
 
     def kaydet(self):
-        # Excel dosyasını seçmek için dosya kaydetme penceresi açılır
-        dosya_adi, _ = QFileDialog.getSaveFileName(self, "Excel Dosyası Kaydet", "", "Excel Dosyaları (*.xlsx)")
-        if not dosya_adi:
-            return
-        if not dosya_adi.endswith('.xlsx'):
-            dosya_adi += '.xlsx'
-
-        # Eğer dosya yoksa yeni oluştur, varsa aç
+        dosya_adi = "soru_bankasi.xlsx"  # Sabit dosya adı
         if os.path.exists(dosya_adi):
             wb = load_workbook(dosya_adi)
             ws = wb.active
@@ -63,14 +56,14 @@ class SoruEklemeEkrani(QWidget):
             wb = Workbook()
             ws = wb.active
             ws.append(["Soru", "Cevap A", "Cevap B", "Cevap C", "Cevap D", "Cevap E", "Doğru Şık"])
-
+    
         for s in self.soruListesi:
             dogru_harf = chr(65 + s['dogru'])  # 0->A, 1->B, ...
             ws.append([s['soru']] + s['cevaplar'] + [dogru_harf])
-
+    
         wb.save(dosya_adi)
         self.soruListesi.clear()
-
+    
 class SoruSecmeEkrani(QWidget):
     def __init__(self):
         super().__init__()
