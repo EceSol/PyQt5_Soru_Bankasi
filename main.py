@@ -1,10 +1,11 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QFileDialog
-
-# .ui dosyalarını pyuic5 ile çevirdiyseniz bu importlar çalışır:
 from ui.ui_ana_ekran import Ui_MainWindow
 from ui.ui_soru_ekleme import Ui_Form as Ui_SoruEkleme
 from ui.ui_soru_yazdirma import Ui_Form as Ui_SoruYazdirma
+
+import os
+from openpyxl import Workbook, load_workbook
 
 class SoruEklemeEkrani(QWidget):
     def __init__(self):
@@ -43,15 +44,28 @@ class SoruEklemeEkrani(QWidget):
                 radio.setChecked(False)
 
     def kaydet(self):
-        dosya_adi, _ = QFileDialog.getSaveFileName(self, "Kaydet", "", "Text Dosyaları (*.txt)")
-        if dosya_adi:
-            with open(dosya_adi, "w", encoding="utf-8") as f:
-                for s in self.soruListesi:
-                    f.write(f"Soru: {s['soru']}\n")
-                    for i, cev in enumerate(s['cevaplar']):
-                        dogru_mu = " (Doğru)" if i == s['dogru'] else ""
-                        f.write(f"  {chr(65+i)}. {cev}{dogru_mu}\n")
-                    f.write("\n")
+        # Excel dosyasını seçmek için dosya kaydetme penceresi açılır
+        dosya_adi, _ = QFileDialog.getSaveFileName(self, "Excel Dosyası Kaydet", "", "Excel Dosyaları (*.xlsx)")
+        if not dosya_adi:
+            return
+        if not dosya_adi.endswith('.xlsx'):
+            dosya_adi += '.xlsx'
+
+        # Eğer dosya yoksa yeni oluştur, varsa aç
+        if os.path.exists(dosya_adi):
+            wb = load_workbook(dosya_adi)
+            ws = wb.active
+        else:
+            wb = Workbook()
+            ws = wb.active
+            ws.append(["Soru", "Cevap A", "Cevap B", "Cevap C", "Cevap D", "Cevap E", "Doğru Şık"])
+
+        for s in self.soruListesi:
+            dogru_harf = chr(65 + s['dogru'])  # 0->A, 1->B, ...
+            ws.append([s['soru']] + s['cevaplar'] + [dogru_harf])
+
+        wb.save(dosya_adi)
+        self.soruListesi.clear()
 
 class SoruSecmeEkrani(QWidget):
     def __init__(self):
