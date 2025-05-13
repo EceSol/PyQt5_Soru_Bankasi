@@ -1,7 +1,5 @@
 # PyQt5_Soru_Bankasi
 
-## Proje Hakkında
-
 Bu uygulama, kullanıcıların soru ve cevaplarını kolayca ekleyip bir Excel dosyasına kaydetmesini ve kayıtlı soruları PDF olarak yazdırmasını sağlar. Arayüz PyQt5 ile hazırlanmıştır.
 
 ---
